@@ -1,0 +1,62 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="assets/jquery-2.1.0.js"></script>
+    <script src="assets/bootstrap.js"></script>
+    <link href="assets/bootstrap.css" rel="stylesheet" />
+    <script src="assets/script.js"></script>
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <!--Le login-->
+        <%if (Session["id"] == null)
+          { %>
+        <div>
+            <asp:Button
+                ID="BtnConnection"
+                runat="server"
+                Text="Connection"
+                OnClick="BtnConnection_Click"
+                CausesValidation="false" />
+            <asp:Button
+                ID="BtnInscription"
+                runat="server"
+                Text="Inscription"
+                PostBackUrl="~/Inscription.aspx"
+                CausesValidation="false" />
+        </div>
+        <%}
+          else
+          { %>
+        <div>
+            Vous êtes connecté en tant que
+            <asp:Label
+                ID="lblUsername"
+                runat="server" />
+            <br />
+            <asp:Button
+                ID="btnDeconnexion"
+                runat="server"
+                Text="Déconnexion"
+                OnClick="btnDeconnexion_Click"
+                CausesValidation="false"
+                CssClass="btn-warning" />
+        </div>
+        <%} %>
+    <div>
+        <asp:ContentPlaceHolder id="body" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>
