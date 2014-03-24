@@ -8,10 +8,19 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" Runat="Server">
 
         <!--Le Forum-->
-        <label id="lbl1er_post">clickez moi !!!!!!!!!!!!</label>
+        <label id="lbl1er_post">Appuyez ici !!!!!!!!!!!!</label>
         <div>
             <!-- -->
             <label id="lblTitre">Titre</label>
+            
+            <asp:table runat="server" ID="menuSujet">
+                <asp:TableHeaderRow>
+                    <asp:TableHeaderCell>Auteur</asp:TableHeaderCell>
+                    <asp:TableHeaderCell>Sujet</asp:TableHeaderCell>
+                    <asp:TableHeaderCell>Date de creation</asp:TableHeaderCell>
+                </asp:TableHeaderRow>
+            </asp:table>
+            
             <asp:TextBox
                 runat="server"
                 id="txbTitre">
