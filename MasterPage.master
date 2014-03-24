@@ -21,6 +21,18 @@
         <%if (Session["id"] == null)
           { %>
         <div>
+            <asp:Label Text="Pseudo" runat="server" />
+            <asp:TextBox
+                runat="Server"
+                id="txbLogin" />    
+                                
+            <asp:Label Text="Mot de passe" runat="server" />
+
+            <asp:TextBox 
+                runat="server" 
+                id="txbMPasse"
+                TextMode="Password"/>
+
             <asp:Button
                 ID="BtnConnection"
                 runat="server"
