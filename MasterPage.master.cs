@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.OleDb;
+using System.Configuration;
 
 public partial class MasterPage : System.Web.UI.MasterPage
 {
@@ -20,6 +22,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
     protected void BtnConnection_Click(object sender, EventArgs e)
     {
+        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
+        connection.Open();
+
+        OleDbCommand command = new OleDbCommand("SELECT titre, auteur, date_creation, ID FROM sujet", connection);
+        OleDbDataReader datareader = command.ExecuteReader();
+
         Session["id"] = "allo";
     }
 }

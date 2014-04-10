@@ -15,7 +15,7 @@ public partial class forum : System.Web.UI.Page
         string nomSujet = Request["titre"];
         lblSujet.Text = nomSujet;
 
-        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
         connection.Open();
 
         OleDbCommand command = new OleDbCommand("SELECT auteur, message, date_ecriture FROM messages WHERE sujet=" + ID, connection);

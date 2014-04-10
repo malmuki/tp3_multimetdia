@@ -1,14 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="forum.aspx.cs" Inherits="forum" %>
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeFile="forum.aspx.cs" Inherits="forum" MasterPageFile="~/MasterPage.master"%>
 
-<!DOCTYPE html>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <title>The Weak End</title>
+</asp:Content>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="body" Runat="Server">
         <div>
             <asp:Label runat="server" Text="" ID="lblSujet"></asp:Label>
             <asp:Table runat="server" ID="menuMessage">
@@ -26,6 +22,4 @@
                 <asp:Label runat="server" ID="lblDevoirConnecter">Vous devez etre connecte pour poster un message.</asp:Label>
             <%} %>
         </div>
-    </form>
-</body>
-</html>
+</asp:Content>

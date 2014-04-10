@@ -8,11 +8,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="body" Runat="Server">
 
         <!--Le Forum-->
-        <label id="lbl1er_post">Appuyez ici !!!!!!!!!!!!</label>
         <div>
-            <!-- -->
-            <label id="lblTitre">Titre</label>
-            
+
             <asp:table runat="server" ID="menuSujet">
                 <asp:TableHeaderRow>
                     <asp:TableHeaderCell>Auteur</asp:TableHeaderCell>
@@ -20,7 +17,10 @@
                     <asp:TableHeaderCell>Date de creation</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
             </asp:table>
-            
+
+            <label id="lbl1er_post">Appuyez ici !!!!!!!!!!!!</label><br />
+            <label id="lblTitre">Titre</label>
+               
             <asp:TextBox
                 runat="server"
                 id="txbTitre">
@@ -40,6 +40,7 @@
                 required="required"
                 wrap="hard">
             </textarea>
+
         </div>
        </asp:Content>
 
