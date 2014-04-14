@@ -4,52 +4,62 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="assets/jquery-2.1.0.js"></script>
     <script src="assets/bootstrap.js"></script>
     <link href="assets/bootstrap.css" rel="stylesheet" />
     <script src="assets/script.js"></script>
     <title></title>
-    <asp:ContentPlaceHolder id="head" runat="server">
-
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body class="bg-info">
-    <form id="form1" runat="server">
+<body class="bg-info" style="margin: 20px 20px auto 20px">
+    <form id="form1" runat="server" class="container-fluid ">
 
         <!--Le login-->
         <%if (Session["id"] == null)
           { %>
-        <div>
-            <asp:Label Text="Pseudo" runat="server" />
-            <asp:TextBox
-                runat="Server"
-                id="txbLogin" />    
-                                
-            <asp:Label Text="Mot de passe" runat="server" />
+            <div class="dropdown">
+                <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">Navigation <span class="caret"></span>
+                </a>
+                <ul class=" dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+                    <li role="presentation" class="dropdown-header">Naviguer</li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Inscription.aspx">Inscription</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Default.aspx">Liste des sujets</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="changementDAvatar.aspx">Changer d'avatar</a></li>
+                </ul>
 
-            <asp:TextBox 
-                runat="server" 
-                id="txbMPasse"
-                TextMode="Password"/>
+                <asp:Label Text="Pseudo" runat="server" />
+                <asp:TextBox
+                    runat="Server"
+                    ID="txbLogin" />
 
-            <asp:Button
-                ID="BtnConnection"
-                runat="server"
-                Text="Connection"
-                OnClick="BtnConnection_Click"
-                CausesValidation="false" />
-            <asp:Button
-                ID="BtnInscription"
-                runat="server"
-                Text="Inscription"
-                PostBackUrl="~/Inscription.aspx"
-                CausesValidation="false" />
-            <asp:Label runat="server"
-                id="lblErrorLogin"
-                text=""
-                class="alert-danger"/>
-        </div>
+                <asp:Label Text="Mot de passe" runat="server" />
+
+                <asp:TextBox
+                    runat="server"
+                    ID="txbMPasse"
+                    TextMode="Password" />
+
+                <asp:Button
+                    ID="BtnConnection"
+                    runat="server"
+                    Text="Connection"
+                    OnClick="BtnConnection_Click"
+                    CausesValidation="false" />
+                <asp:Button
+                    ID="BtnInscription"
+                    runat="server"
+                    Text="Inscription"
+                    PostBackUrl="~/Inscription.aspx"
+                    CausesValidation="false" />
+
+                <asp:Label runat="server"
+                    ID="lblErrorLogin"
+                    Text=""
+                    class="alert-danger" />
+            </div>
         <%}
           else
           { %>
@@ -68,11 +78,10 @@
                 CssClass="btn-warning" />
         </div>
         <%} %>
-    <div>
-        <asp:ContentPlaceHolder id="body" runat="server">
-        
-        </asp:ContentPlaceHolder>
-    </div>
+        <div>
+            <asp:ContentPlaceHolder ID="body" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
     </form>
 </body>
 </html>

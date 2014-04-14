@@ -26,24 +26,25 @@ public partial class forum : System.Web.UI.Page
         {
             TableRow tableRow = new TableRow();
 
-
-            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(0) ? "" : ((string)datareader[0]) });
-            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(1) ? "" : ((string)datareader[1]) });
-            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(2) ? "" : ((DateTime.Now - (DateTime)datareader[2]).ToString("''%d' jours,'%h' heures,'%m' minutes et '%s' secondes'")) });
-
             TableCell avatarCell = new TableCell();
             Image avatar = new Image();
 
             if (datareader.IsDBNull(3) || string.IsNullOrEmpty((string)datareader[3]))
             {
-                avatar.ImageUrl = "~/assets/image/avatar.jpg"; 
+                avatar.ImageUrl = "~/assets/image/avatar.jpg";
             }
             else
             {
-                avatar.ImageUrl = "~/assets/image/" + datareader[3].ToString();          
+                avatar.ImageUrl = "~/assets/image/" + datareader[3].ToString();
             }
             avatarCell.Controls.Add(avatar);
+            Label Text = new Label();
+            Text.Text = datareader.IsDBNull(0) ? "" : ((string)datareader[0]);
+            avatarCell.Controls.Add(Text);
             tableRow.Cells.Add(avatarCell);
+
+            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(1) ? "" : ((string)datareader[1]) });
+            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(2) ? "" : ((DateTime.Now - (DateTime)datareader[2]).ToString("''%d' jours,'%h' heures,'%m' minutes et '%s' secondes'")) });
 
             menuMessage.Rows.Add(tableRow);
         }
