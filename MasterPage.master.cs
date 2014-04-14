@@ -25,9 +25,25 @@ public partial class MasterPage : System.Web.UI.MasterPage
         OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
         connection.Open();
 
-        OleDbCommand command = new OleDbCommand("SELECT titre, auteur, date_creation, ID FROM sujet", connection);
+
+        OleDbCommand command = new OleDbCommand("SELECT mot_de_passe FROM Utilisateurs WHERE nom_utilisateur = @txbLogin", connection);
+        command.Parameters.Add(new OleDbParameter("txbLogin", txbLogin.Text) { OleDbType = OleDbType.VarChar, Size = 255 });
         OleDbDataReader datareader = command.ExecuteReader();
 
-        Session["id"] = "allo";
+        if (datareader.Read())
+        {
+            if ((string)datareader[0] == txbMPasse.Text)
+             {
+                 Session["id"] = txbLogin.Text;
+             }
+            else
+            {
+                lblErrorLogin.Text = "Cet identifiant/mot de passe est incorrect";
+            }
+        }
+        else
+        {
+            lblErrorLogin.Text = "Cet identifiant/mot de passe est incorrect";
+        }
     }
 }

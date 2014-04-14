@@ -45,6 +45,10 @@
                 Text="Inscription"
                 PostBackUrl="~/Inscription.aspx"
                 CausesValidation="false" />
+            <asp:Label runat="server"
+                id="lblErrorLogin"
+                text=""
+                class="alert-danger"/>
         </div>
         <%}
           else
