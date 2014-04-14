@@ -9,33 +9,49 @@ using System.Configuration;
 
 public partial class forum : System.Web.UI.Page
 {
-    protected void Page_Load(object sender, EventArgs e)
+    protected void Page_LoadComplete(object sender, EventArgs e)
     {
-        string ID = Request["ID"];
+        string ID = Request["id"];
         string nomSujet = Request["titre"];
         lblSujet.Text = nomSujet;
 
         OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
         connection.Open();
 
-        OleDbCommand command = new OleDbCommand("SELECT auteur, message, date_ecriture FROM messages WHERE sujet=" + ID, connection);
+        OleDbCommand command = new OleDbCommand("SELECT messages.auteur, messages.message, messages.date_ecriture, Utilisateurs.nom_fichier_avatar FROM Utilisateurs INNER JOIN messages ON Utilisateurs.[nom_utilisateur] = messages.[auteur] WHERE sujet= @id", connection);
+        command.Parameters.Add(new OleDbParameter("id", ID) { OleDbType = OleDbType.VarChar, Size = 255 });
         OleDbDataReader datareader = command.ExecuteReader();
 
         while (datareader.Read())
         {
             TableRow tableRow = new TableRow();
-            TableCell titreCell = new TableCell();
+
 
             tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(0) ? "" : ((string)datareader[0]) });
             tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(1) ? "" : ((string)datareader[1]) });
-            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(2) ? "" : ((DateTime)datareader[2]).ToLongTimeString() });
+            tableRow.Cells.Add(new TableCell() { Text = datareader.IsDBNull(2) ? "" : ((DateTime.Now - (DateTime)datareader[2]).ToString("''%d' jours,'%h' heures,'%m' minutes et '%s' secondes'")) });
+
+            TableCell avatarCell = new TableCell();
+            Image avatar = new Image();
+
+            if (datareader.IsDBNull(3) || string.IsNullOrEmpty((string)datareader[3]))
+            {
+                avatar.ImageUrl = "~/assets/image/avatar.jpg"; 
+            }
+            else
+            {
+                avatar.ImageUrl = "~/assets/image/" + datareader[3].ToString();          
+            }
+            avatarCell.Controls.Add(avatar);
+            tableRow.Cells.Add(avatarCell);
+
             menuMessage.Rows.Add(tableRow);
         }
         connection.Close();
     }
     protected void btnEnvoyerMessage_Click(object sender, EventArgs e)
     {
-        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
         connection.Open();
 
         OleDbCommand command = new OleDbCommand("INSERT INTO messages (sujet, auteur, date_ecriture, message) VALUES (@sujet, @auteur, @date, @message)", connection);

@@ -14,7 +14,7 @@
 
     </asp:ContentPlaceHolder>
 </head>
-<body>
+<body class="bg-info">
     <form id="form1" runat="server">
 
         <!--Le login-->

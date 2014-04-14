@@ -11,7 +11,7 @@
                 <asp:TableHeaderRow>
                     <asp:TableHeaderCell>Auteur</asp:TableHeaderCell>
                     <asp:TableHeaderCell>Message</asp:TableHeaderCell>
-                    <asp:TableHeaderCell>Date de creation</asp:TableHeaderCell>
+                    <asp:TableHeaderCell>Créé il y a :</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
             </asp:Table>
 

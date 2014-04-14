@@ -24,15 +24,22 @@ public partial class Default2 : System.Web.UI.Page
 
             if ((int)command.ExecuteScalar() < 1)
             {
+                string image = "";
                 string passWord = txbMPasse.Text;
-                string image = fileUpload.FileName;
-                
+                if (fileUpload.HasFile)
+                {
+                    image = userName + System.IO.Path.GetExtension(fileUpload.FileName);
+                    fileUpload.SaveAs(Server.MapPath("assets/image/" + image));
+                }
+               
                 command = new OleDbCommand("INSERT INTO Utilisateurs VALUES (@userName,@password, @image)", connection);
                 command.Parameters.Add(new OleDbParameter("userName", userName) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Parameters.Add(new OleDbParameter("password", passWord) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Parameters.Add(new OleDbParameter("image", image) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Prepare();
                 command.ExecuteNonQuery();
+
+
             }
 
             
