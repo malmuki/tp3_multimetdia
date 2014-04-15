@@ -27,14 +27,6 @@ public partial class Default2 : System.Web.UI.Page
             Rfc2898DeriveBytes hash = new Rfc2898DeriveBytes(mdp, tabSels, 1000);
 
             byte[] password = hash.GetBytes(24);  //Obtention du mot de passe crypté
-
-            //INSCRIPTION
-            //Store le mdp hashé
-            //Store le sel
-
-            //CONNECTION
-            //Hasher le mdp entré avec le sel de la bd
-            //Comparer le mdp hashé avec celui de la bd
             
             OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
             connection.Open();
@@ -45,13 +37,20 @@ public partial class Default2 : System.Web.UI.Page
 
             if ((int)command.ExecuteScalar() < 1)
             {
+                string image = "";
+                if (fileUpload.HasFile)
+                {
+                    image = userName + System.IO.Path.GetExtension(fileUpload.FileName);
+                    fileUpload.SaveAs(Server.MapPath("assets/image/" + image));
+                }
+               
                 string passWord = password.ToString();
-                string image = SaveAs(userName + System.IO.Path.GetExtension(fileUpload.FileName));
 
-                command = new OleDbCommand("INSERT INTO Utilisateurs VALUES (@userName,@password, @image)", connection);
+                command = new OleDbCommand("INSERT INTO Utilisateurs VALUES (@userName,@password, @image, @SEL)", connection);
                 command.Parameters.Add(new OleDbParameter("userName", userName) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Parameters.Add(new OleDbParameter("password", passWord) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Parameters.Add(new OleDbParameter("image", image) { OleDbType = OleDbType.VarChar, Size = 255 });
+                command.Parameters.Add(new OleDbParameter("SEL", tabSels) { OleDbType = OleDbType.VarChar, Size = 255 });
                 command.Prepare();
                 command.ExecuteNonQuery();
             }
