@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.OleDb;
 using System.Configuration;
+using System.Data.OleDb;
 using System.Web.UI.WebControls;
 
 public partial class _Default : System.Web.UI.Page
@@ -32,38 +32,45 @@ public partial class _Default : System.Web.UI.Page
         connection.Close();
     }
 
-    protected void BtnEnvoyer_Click(object sender, EventArgs e)
+    protected void btnSujet_Click(object sender, EventArgs e)
     {
-        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
-        connection.Open();
-
-        OleDbCommand command = new OleDbCommand("INSERT INTO sujet (titre, auteur, date_creation) VALUES (@sujet, @auteur, @date, @message)", connection);
-
-        command.Parameters.Add(new OleDbParameter("sujet", int.Parse(Request["ID"]))
+        if (this.IsValid)
         {
-            OleDbType = OleDbType.Integer
-        });
+            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
+            connection.Open();
 
+            OleDbCommand command = new OleDbCommand("INSERT INTO sujet (titre, auteur, date_creation) VALUES (@titre, @auteur, @date)", connection);
 
-        command.Parameters.Add(new OleDbParameter("auteur", Session["ID"])
-        {
-            OleDbType = OleDbType.VarChar,
-            Size = 255
-        });
+            command.Parameters.Add(new OleDbParameter("titre", txbTitre.Text) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("auteur", Session["id"].ToString()) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("date", DateTime.Now) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Prepare();
 
-        command.Parameters.Add(new OleDbParameter("date", DateTime.Now)
-        {
-            OleDbType = OleDbType.Date
-        });
+            command.ExecuteNonQuery();
 
+            command = new OleDbCommand("SELECT ID FROM sujet WHERE auteur=@auteur AND date_creation=@date", connection);
+            command.Parameters.Add(new OleDbParameter("auteur", Session["id"].ToString()) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("date", DateTime.Now) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Prepare();
+            OleDbDataReader datareader = command.ExecuteReader();
 
-        command.Parameters.Add(new OleDbParameter("message", txbMessage.Text)
-        {
-            OleDbType = OleDbType.VarChar,
-            Size = 255
-        });
+             
+            int sujet = 1;
+            if (datareader.Read())
+            {
+                sujet = (int)datareader[0];
+            }
 
-        command.ExecuteNonQuery();
-        connection.Close();
+            command = new OleDbCommand("INSERT INTO messages (sujet, auteur, date_ecriture, message) VALUES (@sujet, @auteur, @date, @message)", connection);
+            command.Parameters.Add(new OleDbParameter("sujet", sujet) { OleDbType = OleDbType.Integer, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("auteur", Session["id"].ToString()) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("date", DateTime.Now) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Parameters.Add(new OleDbParameter("message", txtMessage.Text) { OleDbType = OleDbType.VarChar, Size = 255 });
+            command.Prepare();
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 }
