@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 
 public partial class _Default : System.Web.UI.Page
 {
-    protected void Page_LoadComplete(object sender, EventArgs e)
+    protected void Page_Load(object sender, EventArgs e)
     {
         OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["GeneralDatabase"].ConnectionString);
         connection.Open();
@@ -32,4 +32,38 @@ public partial class _Default : System.Web.UI.Page
         connection.Close();
     }
 
+    protected void BtnEnvoyer_Click(object sender, EventArgs e)
+    {
+        OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+        connection.Open();
+
+        OleDbCommand command = new OleDbCommand("INSERT INTO sujet (titre, auteur, date_creation) VALUES (@sujet, @auteur, @date, @message)", connection);
+
+        command.Parameters.Add(new OleDbParameter("sujet", int.Parse(Request["ID"]))
+        {
+            OleDbType = OleDbType.Integer
+        });
+
+
+        command.Parameters.Add(new OleDbParameter("auteur", Session["ID"])
+        {
+            OleDbType = OleDbType.VarChar,
+            Size = 255
+        });
+
+        command.Parameters.Add(new OleDbParameter("date", DateTime.Now)
+        {
+            OleDbType = OleDbType.Date
+        });
+
+
+        command.Parameters.Add(new OleDbParameter("message", txbMessage.Text)
+        {
+            OleDbType = OleDbType.VarChar,
+            Size = 255
+        });
+
+        command.ExecuteNonQuery();
+        connection.Close();
+    }
 }
